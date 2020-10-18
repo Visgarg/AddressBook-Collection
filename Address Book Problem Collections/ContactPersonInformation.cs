@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Address_Book_Problem_Collections;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -375,7 +376,7 @@ namespace AddressBook
         {
             foreach (ContactDetails contactDetail in contactDetailsList)
             {
-                if (firstName.Equals(contactDetail.firstName) && lastName.Contains(contactDetail.lastName))
+                if (firstName.Equals(contactDetail.firstName) && lastName.Equals(contactDetail.lastName))
                 //if (contactDetail.firstName == firstName && contactDetail.lastName == lastName && contactDetail.address == address && contactDetail.city == city && contactDetail.state == state && contactDetail.zip == zip && contactDetail.phoneNo == phoneNo && contactDetail.eMail == eMail)
                 {
                     //if same contact details are entered, than details are entered again
@@ -386,6 +387,62 @@ namespace AddressBook
 
             }
             return true;
+        }
+        /// <summary>
+        /// Method to search contact details using city
+        /// </summary>
+        /// <param name="searchCity"></param>
+        /// <returns>used to throw exception</returns>
+        public bool SearchingContactDetailsByCity(string searchCity)
+        {
+            //used to check if city exist and increments the index. If index=0, exception is thrown
+            int index = 0;
+            foreach(ContactDetails contactPerson in contactDetailsList)
+            {
+                //checks if city is there in list
+                if(contactPerson.city.Equals(searchCity))
+                {
+                    Console.WriteLine($"First Name : {contactPerson.firstName} || Last Name: {contactPerson.lastName} || Address: {contactPerson.address} || City: {contactPerson.city} || State: {contactPerson.state}|| zip: {contactPerson.zip} || Phone No: {contactPerson.phoneNo} || eMail: {contactPerson.eMail}");
+                    index++;
+                }
+            }
+            if(index==0)
+            {
+                //custom exception is thrown when city is not in list
+                throw new AddressBookCustomException(AddressBookCustomException.ExceptionType.Wrong_city_name,"City name is not in list");
+            }
+            else
+            {
+                return true;
+            }
+        }
+        /// <summary>
+        /// Method to search details using state
+        /// </summary>
+        /// <param name="searchState"></param>
+        /// <returns>used to throw exception</returns>
+        public bool SearchingContactDetailsByState(string searchState)
+        {
+            //index is used to check if state exist
+            int index = 0;
+            foreach (ContactDetails contactPerson in contactDetailsList)
+            {
+                if (contactPerson.city.Equals(searchState))
+                {
+                    //Displays details for particular state
+                    Console.WriteLine($"First Name : {contactPerson.firstName} || Last Name: {contactPerson.lastName} || Address: {contactPerson.address} || City: {contactPerson.city} || State: {contactPerson.state}|| zip: {contactPerson.zip} || Phone No: {contactPerson.phoneNo} || eMail: {contactPerson.eMail}");
+                    index++;
+                }
+            }
+            if (index == 0)
+            {
+                //throws custom exception
+                throw new AddressBookCustomException(AddressBookCustomException.ExceptionType.Wrong_city_name, "State name is not in list");
+            }
+            else
+            {
+                return true;
+            }
         }
     }
     
