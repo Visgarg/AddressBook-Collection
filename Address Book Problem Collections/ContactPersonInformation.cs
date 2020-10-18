@@ -6,15 +6,21 @@ namespace AddressBook
 {
     public class ContactPersonInformation
     {
+        //Declaring List to store contact details
         List<ContactDetails> contactDetailsList;
         private readonly NLog nLog = new NLog();
 
-
+        /// <summary>
+        /// Declaring constructor to inititate list
+        /// </summary>
         public ContactPersonInformation()
         {
             contactDetailsList = new List<ContactDetails>();
         }
        
+        /// <summary>
+        /// Adding contact details in the list
+        /// </summary>
         public void AddingContactDetails()
         {
             ContactPersonInformation contactPersonalInformation = new ContactPersonInformation();
@@ -22,10 +28,12 @@ namespace AddressBook
 
             while (true)
             {
+             //used goto method to call the method again
             Repeat: Console.WriteLine("Please enter first name, last name, address, city, state, zip, phoneno and email");
                 string firstName = Console.ReadLine();
                 if (firstName == "")
-                {
+                {   
+                    //if first name is null, then no more contact details are entered
                     nLog.LogInfo("No more contact details have been entered");
                     break;
                 }
@@ -37,7 +45,7 @@ namespace AddressBook
                 double phoneNo = Convert.ToDouble(Console.ReadLine());
                 if (phoneNo <= 200000)
                 {
-                    //Console.WriteLine("Please enter a valid Phone no.");
+                    //if phone no is less than 200000 than details are entered again
                     nLog.LogError("Entered Wrong Phone no. : AdditionContactDetails()");
                     Console.WriteLine("Wrong phone details entered, please enter your details again");
                     goto Repeat;
@@ -51,25 +59,24 @@ namespace AddressBook
                 {
                     if (contactDetail.firstName == firstName && contactDetail.lastName == lastName && contactDetail.address == address && contactDetail.city == city && contactDetail.state == state && contactDetail.zip == zip && contactDetail.phoneNo == phoneNo && contactDetail.eMail == eMail)
                     {
+                        //if same contact details are entered, than details are entered again
                         nLog.LogError("Contact details have already been entered");
                         Console.WriteLine("Contact details have already been entered\n please add new contact details");
                         goto Repeat;
                     }
 
                 }
-                //else
-                //{
+                //Adding Contact details in the list
                     contactDetailsList.Add(contactDetails);
                     nLog.LogDebug("Contact Details Addition Successful: AddingContactDetails()");
-                //}
             }
 
             contactPersonalInformation.DisplayContactDetails();
-            AddressBook addressBook = new AddressBook();
-            //addressBook.AddingAddressBook(contactDetailsList);
 
-               
         }
+        /// <summary>
+        /// Displaying contact details of one address book
+        /// </summary>
         public void DisplayContactDetails()
         {
             foreach(ContactDetails contactPerson in contactDetailsList)
@@ -78,9 +85,14 @@ namespace AddressBook
             }
             nLog.LogDebug("Displaying Contact Details Successful :DisplayingContactDetails()");
         }
+        /// <summary>
+        /// Edits contact details in address book
+        /// </summary>
         public void EditingContactDetails()
         {
             ContactPersonInformation contact = new ContactPersonInformation();
+            //using go to method for repeating the process
+            //better process is using exceptions
             addingDetailsAgainForEditing:  Console.WriteLine("Please help us, first identify you");
             Console.WriteLine("Please enter your first name and phone no");
             string firstNm = Console.ReadLine();
@@ -88,8 +100,10 @@ namespace AddressBook
             double  mobileNo = Convert.ToDouble(Console.ReadLine());
             foreach(ContactDetails contactDetails in contactDetailsList)
             {
+                //using first name and mobile  no to verify contact person
                 if(contactDetails.firstName==firstNm && contactDetails.phoneNo==mobileNo)
                 {
+                    //asking user to input detail of what needs to be edited and forwarding the input to switch case.
                     EditAgain:  Console.WriteLine("please select the serial no. of field which you want to change\n 1. First name \n2.Last name\n3.Address\n4.City\n5.State\n6.Zip code\n7.Phone no.\n 8.email");
                     int inputForEditing = Convert.ToInt32(Console.ReadLine());
                     editCheck++;
@@ -104,6 +118,7 @@ namespace AddressBook
                                 Console.WriteLine("Please enter details again");
                                 goto firstname;
                             }
+                            //details are edited
                             contactDetails.firstName = newFirstName;
                             nLog.LogDebug("Debug successful, firstname successfully changed : EditingContactDetails()");
                             Console.WriteLine("Do you want to update anything else, press y to update again,else press enter");
@@ -313,6 +328,9 @@ namespace AddressBook
             }
             contact.DisplayContactDetails();
         }
+        /// <summary>
+        /// Deleting contact details from address book
+        /// </summary>
         public void DeletingContactDetails()
         {
             addingDetailsForDeleting:  Console.WriteLine("Please help us, first identify you");
@@ -324,13 +342,12 @@ namespace AddressBook
             {
                 if (contactDetails.firstName == firstNm && contactDetails.phoneNo == mobileNo)
                 {
+                    //removing selected object of contact details from contact details list
                     contactDetailsList.Remove(contactDetails);
                     Console.WriteLine("deletion operation successful");
                     nLog.LogDebug("Deletion Operation Successful:DeletingContactDetails()");
                     index++;
                     break;
-                    
-
                 }
                 
             }
